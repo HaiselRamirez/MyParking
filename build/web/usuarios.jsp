@@ -19,16 +19,18 @@
       <div class="card">
         <div class="card-header">
           <div class="row">
-            <div class="col-9"></div>
+            <div class="col-9">
+              <h4 class="card-title"><i class="fas fa-list"></i> Lista de los usuarios del sistema</h4>
+            </div>
             <div class="col-3">
               <button class="btn btn-block btn-dark" onclick="cambioDiv();"><i class="fas fa-user-plus"></i> NUEVO USUARIO</button>
             </div>
           </div>
         </div>
         <div class="card-body">
-          <div class="table-responsive">
-             <table class="table table-sm table-hover table-bordered" id="tblUsuarios">
-               <thead class="text-center">
+          <div class="table-responsive w-100">
+             <table class="table table-sm table-hover" id="tblUsuarios">
+               <thead>
                 <tr>
                   <th>Id</th>
                   <th>Usuario</th>
@@ -37,7 +39,7 @@
                   <th>Cargo</th>
                   <th>Tanda</th>
                   <th>Estado</th>
-                  <th></th>
+                  <th><i class="fas fa-user-edit"></i></th>
                 </tr>
               </thead>
               <tbody>
@@ -48,6 +50,7 @@
       </div>
     </div>
   </div>
+<!-- Fin del div-->
 <!-- Formulario para agregar un usuario -->
   <div class="row d-none" id="divFormUsuarios">
     <div class="col-12">
@@ -56,7 +59,7 @@
             <h3 class="card-title"><i class="fas fa-user-plus"></i> Formulario para nuevo usuario</h3>
           </div>
           <div class="card-body">
-            <form action="Usuarios_c" method="POST" id="frmAddUsuario">
+            <form action="Usuarios" method="POST" id="frmAddUsuario">
               <div class="row">
                 <div class="col-3">
                   <div class="form-group">
@@ -103,6 +106,7 @@
                       <option value="matutino">Matutino</option>
                       <option value="vespertino">Vespertino</option>
                       <option value="nocturno">Nocturno</option>
+                      <option value="na">Indefinida</option>
                     </select>
                   </div>
                 </div>
@@ -127,6 +131,7 @@
       </div>
     </div>
   </div>
+<!-- Fin del div-->
 <!-- Formulario para editar un usuario -->
   <div class="row d-none" id="divEditUsuarios">
     <div class="col-12">
@@ -207,10 +212,8 @@
       </div>
     </div>
   </div>
+<!-- Fin del div-->
 </section>
-
-
-
 <%@include file="footer.jsp" %>
   <script src="dist/js/usuarios.js"></script>
   </body>

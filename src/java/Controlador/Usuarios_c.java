@@ -7,47 +7,27 @@ package Controlador;
 
 import DAO.UsuariosDAO;
 import Modelo.Usuarios;
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 
 public class Usuarios_c extends HttpServlet {
-  Usuarios us = new Usuarios();
+  
   UsuariosDAO dao = new UsuariosDAO();
- 
+  Usuarios us = new Usuarios();
+  Map<Integer, String> map = new HashMap<Integer, String>();
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-      String accion = request.getParameter("accion");
-      try {
-        if(accion != null){
-          switch(accion){
-            case "verificar":
-             verificar(request, response);
-             break;
-            case "cerrar":
-              cerrarSession(request, response);
-              break;
-            default:
-              response.sendRedirect("login.jsp");
-          }
-        }else{
-          response.sendRedirect("login.jsp");
-        }
-    } catch (Exception e) {
-        try {
-          this.getServletConfig().getServletContext().getRequestDispatcher("/mensaje.jsp").forward(request, response);
-        } catch (Exception ex) {
-          System.out.println("Error " + ex.getMessage());
-        }
-    }
+  
   }
 
   @Override
@@ -55,66 +35,90 @@ public class Usuarios_c extends HttpServlet {
           throws ServletException, IOException {
     
   }
-
-
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
+    listarUsuarios(request, response);
     String act = request.getParameter("accion");
-    if(act.equalsIgnoreCase("Agregar")){
-      us.setUser(request.getParameter("tuUsuario"));
-      us.setClave(request.getParameter("tuClave"));
-      us.setNombre(request.getParameter("tuNombre"));
-      us.setEmail(request.getParameter("tuCorreo"));
-      us.setCargo(request.getParameter("tuCargo"));
-      us.setTanda(request.getParameter("tuTanda"));
-      if(dao.agregar(us)){
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json");
-        Map<String,String> map = new HashMap<String,String>();
-        
-      }
-    }else if(act.equalsIgnoreCase("Login")){
-      us.setUser(request.getParameter("txtUser"));
-      us.setClave(request.getParameter("txtPass"));
-      Usuarios u = dao.validar(us);
-      
+    switch(act){
+      case "agregar":
+        agregarUsuarios(request, response);
+        break;
+      case "editar":
+        editarUsuario(request, response);
+        break;
+      case "eliminar":
+        eliminarUsuario(request, response);
+        break;
+      case "list":
+        unUsuario(request, response);
+        break;
+      default:
+        listarUsuarios(request, response);
+        break;
     }
+      
   }
   
   @Override
   public String getServletInfo() {
     return "Short description";
-  }// </editor-fold>
-
-  private void verificar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    HttpSession sesion;
-    UsuariosDAO dao;
-    Usuarios usu;
-    usu = this.obtenerUsuario(request);
-    dao = new UsuariosDAO();
-    usu = dao.validar(usu);
-    if(usu != null){
-      sesion = request.getSession();
-      sesion.setAttribute("usuario", usu);
-      sesion.setAttribute("mensaje", "Bienvenido al sistema");
-      this.getServletConfig().getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+  }
+  private void listarUsuarios(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    List<Usuarios>list = new ArrayList();
+    list = dao.listar();
+    responseJson(list, response);
+  }
+  
+  private void agregarUsuarios(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    us.setUser(request.getParameter("tuUsuario"));
+    us.setClave(request.getParameter("tuUsuario"));
+    us.setNombre(request.getParameter("tuNombre"));
+    us.setEmail(request.getParameter("tuCorreo"));
+    us.setCargo(request.getParameter("tuCargo"));
+    us.setTanda(request.getParameter("tuTanda"));
+    boolean add = dao.agregar(us);
+    if(add == true){
+     map.put(1, "success");
+     map.put(2, "Usuario agregado correctamente");
     }else{
-      request.setAttribute("mensaje","Usuario y/o clave incorrecta");
-      request.getRequestDispatcher("login.jsp").forward(request, response);
+      map.put(1, "error");
+      map.put(2, "Ocurrió un error al agregar al usuario");
     }
+    responderJson(map, response);
   }
-  private void cerrarSession(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
-    HttpSession sesion = request.getSession();
-    sesion.setAttribute("usuario", null);
-    sesion.invalidate();
-    response.sendRedirect("login.jsp");
+  
+  private void editarUsuario(HttpServletRequest request, HttpServletResponse response) {
+    
   }
 
-  private Usuarios obtenerUsuario(HttpServletRequest request) {
-    Usuarios u = new Usuarios();
-    u.setUser(request.getParameter("txtUser"));
-    u.setClave(request.getParameter("txtPass"));
-    return u;
+  private void eliminarUsuario(HttpServletRequest request, HttpServletResponse response) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
+
+  private void unUsuario(HttpServletRequest request, HttpServletResponse response) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+
+  private void responseJson(List<Usuarios> list, HttpServletResponse response) throws IOException {
+    Gson gson = new Gson();
+    String json = gson.toJson(list);
+    PrintWriter printer = response.getWriter();
+    response.setContentType("application/json");
+    response.setCharacterEncoding("utf-8");
+    printer.write(json);
+    printer.close();
+  }
+
+  private void responderJson(Map<Integer, String> map, HttpServletResponse response) throws IOException {
+   Gson gson = new Gson();
+    String json = gson.toJson(map);
+    PrintWriter printer = response.getWriter();
+    response.setContentType("application/json");
+    response.setCharacterEncoding("utf-8");
+    printer.write(json);
+    printer.close();
+  }
+  
+  
 }

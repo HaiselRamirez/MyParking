@@ -24,8 +24,8 @@
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Ingresa los datos para iniciar sesiÃ³n</p>
-      <form action="Usuarios?accion=verificar" method="post" id="frmLogin">
+      <p class="login-box-msg">Ingresa los datos para iniciar sesión</p>
+      <form action="Login" method="post" id="frmLogin">
         <div class="input-group mb-3">
           <input type="text" class="form-control" name="txtUser" id="txtUser" placeholder="Usuario">
           <div class="input-group-append">
@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="txtPass" id="txtPass" placeholder="ContraseÃ±a">
+          <input type="password" class="form-control" name="txtPass" id="txtPass" placeholder="Contraseña">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock-open"></span>
@@ -61,5 +61,30 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
+<script>
+  $(function(){
+   $("#frmLogin").submit(function(e){
+    e.preventDefault();
+     let datos = {
+       "accion": "entrar",
+       "usuario": $("#txtUser").val().toString(),
+       "clave": $("#txtPass").val().toString()
+     }
+      if(datos.clave =="" || datos.clave==""){
+          alert("todos los campos son necesarios");
+      }else{
+        $.ajax({
+          type: "POST",
+          url: "Login",
+          data: datos,
+          dataType: "json",
+          success: function (response) {
+            console.log(response);
+          }
+        });
+      }
+    })
+  });
+</script>
 </body>
 </html>

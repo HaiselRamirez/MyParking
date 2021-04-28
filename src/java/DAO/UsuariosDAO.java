@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,13 +23,42 @@ public class UsuariosDAO implements Usuarios_i{
   Statement ct =null;
   
   @Override
-  public ArrayList<Usuarios> listar() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public List listar() {
+    ArrayList<Usuarios>list =new ArrayList();
+    String query = "SELECT * FROM usuarios";
+    try {
+      con =cn.getConexion();
+      ps=con.prepareStatement(query);
+      rs =ps.executeQuery();
+      while(rs.next()){
+        Usuarios u = new Usuarios();
+        u.setId(rs.getInt("id"));
+        u.setUser(rs.getString("usuario"));
+        u.setClave(rs.getString("clave"));
+        u.setNombre(rs.getString("nombre"));
+        u.setEmail(rs.getString("correo"));
+        u.setCargo(rs.getString("cargo"));
+        u.setTanda(rs.getString("tanda"));
+        u.setEstado(rs.getBoolean("estado"));
+        list.add(u);
+      }
+    } catch (Exception e) {
+    }
+    return list;
   }
 
   @Override
   public Usuarios list(int id) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Usuarios u = new Usuarios();
+    String query = "SELECT * FROM usuarios WHERE id="+id;
+    try {
+      con =cn.getConexion();
+      ps=con.prepareStatement(query);
+      rs =ps.executeQuery();
+    } catch (Exception e) {
+    }
+    
+   return us;
   }
 
   @Override
