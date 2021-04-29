@@ -1,6 +1,5 @@
 $(function(){
 startTime();
-mensaje("W","sdfgsfdgsdg");
 });
 
 
@@ -55,6 +54,6 @@ function mensaje(tipo, msj){
     icon: type,
     title: titulo,
     text: mensaje,
-    timer: 3000
+    timer: 4000
   });
 }

@@ -112,7 +112,9 @@
                 </div>
               </div>
               <div class="row mt-2">
-                <div class="col-6"></div>
+                <div class="col-6">
+                  <input type="hidden" name="accion" value="agregar">
+                </div>
                 <div class="col-3">
                   <button class="btn btn-block btn-dark" type="submit">
                     <i class="fas fa-save"></i>
@@ -140,39 +142,40 @@
             <h3 class="card-title"><i class="fas fa-user-edit"></i> Editar Informacion de usuario</h3>
           </div>
           <div class="card-body">
-            <form action="Usuario_c?accion=editar" method="POST" id="frmEditUsuario">
+            <form action="#" method="POST" id="frmEditUsuario">
               <div class="row">
-                <input type="hidden" name="teuId" id="teuId">
+                <input type="hidden" name="t_Id" id="t_Id">
+                <input type="hidden" name="accion" value="editar">
                 <div class="col-3">
                   <div class="form-group">
-                    <label for="tuUsuario">Usuario: </label>
-                    <input type="text" class="form-control" id="teuUsuario" name="teuUsuario" readonly >
+                    <label for="t_Usuario">Usuario: </label>
+                    <input type="text" class="form-control" id="t_Usuario" name="t_Usuario" readonly >
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group">
-                    <label for="tuClave">Contraseña: </label>
-                    <input type="password" class="form-control" id="teuClave" name="teuClave" placeholder="Contraseña">
+                    <label for="t_Clave">Contraseña: </label>
+                    <input type="password" class="form-control" id="t_Clave" name="t_Clave" placeholder="Contraseña" required>
                   </div>
                 </div>
                 <div class="col-5">
                   <div class="form-group">
-                    <label for="tuNombre">Nombre: </label>
-                    <input type="text" class="form-control" id="teuNombre" name="teuNombre" placeholder="Nombre">
+                    <label for="t_Nombre">Nombre: </label>
+                    <input type="text" class="form-control" id="t_Nombre" name="t_Nombre" placeholder="Nombre" required>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-5">
                   <div class="form-group">
-                    <label for="tuCorreo">Correo electronico: </label>
-                    <input type="mail" class="form-control" id="teuCorreo" name="teuCorreo" placeholder="example@mail.com">
+                    <label for="t_Correo">Correo electronico: </label>
+                    <input type="mail" class="form-control" id="t_Correo" name="t_Correo" placeholder="example@mail.com" required>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="form-group">
-                    <label for="tuCargo">Cargo:</label>
-                    <select class="form-control" id="teuCargo" name="teuCargo" >
+                    <label for="t_Cargo">Cargo:</label>
+                    <select class="form-control" id="t_Cargo" name="t_Cargo" required>
                       <option value="">Seleccione...</option>
                       <option value="caja">Cajero</option>
                       <option value="admin">Administrador</option>
@@ -182,8 +185,8 @@
                 </div>
                 <div class="col-3">
                   <div class="form-group">
-                    <label for="tuTanda">Hotario:</label>
-                    <select class="form-control" id="teuTanda" name="teuTanda">
+                    <label for="t_Tanda">Hotario:</label>
+                    <select class="form-control" id="teuTanda" name="teuTanda" required>
                       <option value="">Seleccione...</option>
                       <option value="matutino">Matutino</option>
                       <option value="vespertino">Vespertino</option>
@@ -193,15 +196,26 @@
                 </div>
               </div>
               <div class="row mt-2">
-                <div class="col-6"></div>
+                <div class="col-2">
+                  <div class="form-group text-right">
+                    <label for="t_Estado">Estado:</label>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <select name="t_Estado" id="t_Estado" class="form-control" required>
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                  </select>
+                </div>
+                <div class="col-1"></div>
                 <div class="col-3">
                   <button class="btn btn-block btn-dark" type="submit">
                     <i class="fas fa-save"></i>
-                    <span>EDITAR</span>
+                    <span>GUARDAR CAMBIOS</span>
                   </button>
                 </div>
                 <div class="col-3">
-                  <button class="btn btn-block btn-danger" type="button" onclick="cambioDiv();">
+                  <button class="btn btn-block btn-danger" type="reset" onclick="cambio2Div();">
                     <i class="fas fa-times"></i>
                     <span> CANCELAR</span>
                   </button>

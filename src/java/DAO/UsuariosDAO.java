@@ -49,21 +49,32 @@ public class UsuariosDAO implements Usuarios_i{
 
   @Override
   public Usuarios list(int id) {
-    Usuarios u = new Usuarios();
+    Usuarios user;
+    user = new Usuarios();
     String query = "SELECT * FROM usuarios WHERE id="+id;
     try {
       con =cn.getConexion();
       ps=con.prepareStatement(query);
       rs =ps.executeQuery();
-    } catch (Exception e) {
+      while(rs.next()){
+        user.setId(rs.getInt("id"));
+        user.setUser(rs.getString("usuario"));
+        user.setClave(rs.getString("clave"));
+        user.setNombre(rs.getString("nombre"));
+        user.setEmail(rs.getString("correo"));
+        user.setCargo(rs.getString("cargo"));
+        user.setTanda(rs.getString("tanda"));
+        user.setEstado(rs.getBoolean("estado"));
+      }
+    } catch (ClassNotFoundException e) {
+    } catch (SQLException e) {
     }
-    
-   return us;
+   return user;
   }
 
   @Override
   public boolean agregar(Usuarios us) {
-    String query= "INSERT INTO usuario(usuario,clave,nombre,correo,cargo,tanda) VALUES('"+us.getUser()+"','"+us.getClave()+"', '"+us.getNombre()+"','"+us.getEmail()+"', '"+us.getCargo()+"', '"+us.getTanda()+"')";
+    String query= "INSERT INTO usuarios(usuario,clave,nombre,correo,cargo,tanda) VALUES('"+us.getUser()+"','"+us.getClave()+"', '"+us.getNombre()+"','"+us.getEmail()+"', '"+us.getCargo()+"', '"+us.getTanda()+"')";
     boolean r = false;
     try {
         con = cn.getConexion();
@@ -75,13 +86,27 @@ public class UsuariosDAO implements Usuarios_i{
     } catch (ClassNotFoundException ex) {
       Logger.getLogger(UsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
     }
-    
     return r;
   }
 
   @Override
   public boolean editar(Usuarios us) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    boolean res = false;
+    String query = "UPDATE usuarios SET usuario="+us.getUser()+",nombre="+us.getNombre()+",clave="+us.getClave()+",correo="+us.getEmail()+",cargo="+us.getCargo()+",tanda="+us.getTanda()+",estado="+us.isEstado()
+            +",editado=now() WHERE id="+us.getId();
+    try {
+      con = cn.getConexion();
+      ps = con.prepareStatement(query);
+      ps.executeUpdate();
+      res = true;
+    } catch (ClassNotFoundException e) {
+      System.out.print(e.getMessage());
+      res = false;
+    } catch (SQLException e) {
+      System.out.print(e.getMessage());
+      res = false;
+    }
+    return res;
   }
 
   @Override

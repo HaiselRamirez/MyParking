@@ -9,6 +9,18 @@ function cambio2Div(){
   $("#divEditUsuarios").toggleClass('d-none');
 }
 
+$("#frmEditUsuario").submit(function(e){
+  e.preventDefault();
+  $.ajax({
+    type: "POST",
+    url: "Usuarios",
+    data: $(this).serialize(),
+    dataType: "json",
+    success: function (data) {
+      msg(data);     
+    }
+  });
+});
 
 $("#tblUsuarios").dataTable({
   ordering: false,
@@ -32,11 +44,8 @@ $("#tblUsuarios").dataTable({
     {orderable:true,
       render:function(data,type,row){
         return `
-          <button class="btn btn-flat btn-sm btn-info rounded-circle">
+          <button class="btn btn-flat btn-sm btn-info rounded-circle" onclick="editarUsuarios(${row.id});">
             <i class="fas fa-pencil-alt"></i>
-          </button>
-          <button class="btn btn-flat btn-sm btn-danger rounded-circle">
-            <i class="fas fa-trash"></i>
           </button>
         `;
       }
@@ -88,7 +97,7 @@ $("#tblUsuarios").dataTable({
       targets: 6,
       render:function(data,type,row){
         if(data ==true){
-          return `<span class="badge badge-primary"><i class="fas fa-user-check"></i> Activo</span>`;
+          return `<span class="badge badge-success"><i class="fas fa-user-check"></i> Activo</span>`;
         }else{
           return `<span class="badge badge-danger"><i class="fas fa-user-lock"></i> Inactivo</span>`;
         }
@@ -101,29 +110,65 @@ $("#tblUsuarios").dataTable({
 
 $("#frmAddUsuario").submit(function(e){
   e.preventDefault();
-  if(validarCampos() == true){
-    $.ajax({
-      type: "POST",
-      url: "Usuarios",
-      data: {"accion": "agregar"},
-      dataType: "json",
-      success: function (response) {
-        console.log(response);
-      }
-    });
-  }
-})
+  $.ajax({
+    type: "POST",
+    url: "Usuarios",
+    data: $(this).serialize(),
+    dataType: "json",
+    success: function (data) {
+      msg(data);     
+    }
+  });
+});
 
-function validarCampos(){
-  let r = false;
-  let Usuario = $("#tuUsuario").val().toString();
-  let Clave = $("#tuClave").val().toString();
-  let Nombre = $("#tuNombre").val().toString();
-  let Correo = $("#tuCorreo").val().toString();
-  let Cargo = $("#tuCargo").val().toString();
-  let Tanda = $("#tuTanda").val().toString();
-  if(Usuario == "" || null){
-    mensaje("E", "El usuario es requerido");
+function editarUsuarios(id){
+  let datos = {"id":id,"accion": "list"};
+  $.ajax({
+    type: "POST",
+    url: "Usuarios",
+    data: datos,
+    dataType: "json",
+    success: function (da) {
+      cargarFrmEditar(da);
+    }
+  });
+}
+
+function cargarFrmEditar(da){
+  debugger;
+  $("#t_Id").val(da.id);
+  $("#t_Usuario").val(da.usuario);
+  $("#t_Clave").val(da.clave);
+  $("#t_Nombre").val(da.nombre);
+  $("#t_Correo").val(da.correo);
+  $("#t_Cargo").val(da.cargo);
+  $("#t_Tanda").val(da.tanda);
+  if(da.estado == "true"){
+    $("#t_Estado").val(1);
+  }else{
+    $("#t_Estado").val(0);
   }
-  return r;
+  cambio2Div();
+}
+
+function msg(data){
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 6000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  });
+  Toast.fire({
+    icon: data.code,
+    title: data.mensaje
+  }).then((result) => {
+    if (result.dismiss === Swal.DismissReason.timer) {
+      location.reload();
+    }
+  })
 }
