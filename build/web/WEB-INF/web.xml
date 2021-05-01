@@ -8,6 +8,10 @@
         <servlet-name>Login</servlet-name>
         <servlet-class>Controlador.Login</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Parqueo</servlet-name>
+        <servlet-class>Controlador.Parqueo_c</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Usuarios_c</servlet-name>
         <url-pattern>/Usuarios</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Parqueo_c</servlet-name>
+        <url-pattern>/Parqueo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

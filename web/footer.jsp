@@ -1,7 +1,5 @@
+      <%@page contentType="text/html" pageEncoding="UTF-8"%>
       </div>
-      <
-
-
       <footer class="main-footer">
         <div class="float-right d-none d-sm-block">
           <b>Versión</b> 1.0
@@ -18,5 +16,4 @@
     <script src="dist/js/adminlte.min.js"></script>
     <script src="dist/js/demo.js"></script>
     <script src="dist/js/funciones.js"></script>
-
 

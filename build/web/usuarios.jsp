@@ -1,3 +1,7 @@
+<%
+  if("on".equals(session.getAttribute("login"))){
+    if("admin".equals(session.getAttribute("cargo"))){
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="header.jsp" %>
 <section class="content-header">
@@ -32,7 +36,6 @@
              <table class="table table-sm table-hover" id="tblUsuarios">
                <thead>
                 <tr>
-                  <th>Id</th>
                   <th>Usuario</th>
                   <th>Nombre</th>
                   <th>Email</th>
@@ -145,6 +148,7 @@
             <form action="#" method="POST" id="frmEditUsuario">
               <div class="row">
                 <input type="hidden" name="t_Id" id="t_Id">
+
                 <input type="hidden" name="accion" value="editar">
                 <div class="col-3">
                   <div class="form-group">
@@ -186,7 +190,7 @@
                 <div class="col-3">
                   <div class="form-group">
                     <label for="t_Tanda">Hotario:</label>
-                    <select class="form-control" id="teuTanda" name="teuTanda" required>
+                    <select class="form-control" id="teuTanda" name="t_Tanda" required>
                       <option value="">Seleccione...</option>
                       <option value="matutino">Matutino</option>
                       <option value="vespertino">Vespertino</option>
@@ -232,3 +236,11 @@
   <script src="dist/js/usuarios.js"></script>
   </body>
 </html>
+<%
+    }else{
+      response.sendRedirect("index.jsp");
+    }
+}else{
+  response.sendRedirect("login.jsp");
+}
+%>

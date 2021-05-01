@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,7 +43,8 @@ public class UsuariosDAO implements Usuarios_i{
         u.setEstado(rs.getBoolean("estado"));
         list.add(u);
       }
-    } catch (Exception e) {
+    } catch (ClassNotFoundException e) {
+    } catch (SQLException e) {
     }
     return list;
   }
@@ -92,8 +94,9 @@ public class UsuariosDAO implements Usuarios_i{
   @Override
   public boolean editar(Usuarios us) {
     boolean res = false;
-    String query = "UPDATE usuarios SET usuario="+us.getUser()+",nombre="+us.getNombre()+",clave="+us.getClave()+",correo="+us.getEmail()+",cargo="+us.getCargo()+",tanda="+us.getTanda()+",estado="+us.isEstado()
-            +",editado=now() WHERE id="+us.getId();
+    Date fecha = new Date();
+
+    String query = "UPDATE usuarios SET clave='"+us.getClave()+"', nombre='"+us.getNombre()+"', correo='"+us.getEmail()+"', cargo='"+us.getCargo()+"', tanda='"+us.getTanda()+"', estado="+us.isEstado()+" WHERE id="+us.getId();
     try {
       con = cn.getConexion();
       ps = con.prepareStatement(query);
@@ -109,49 +112,52 @@ public class UsuariosDAO implements Usuarios_i{
     return res;
   }
 
-  @Override
-  public boolean eliminar(int id) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
+  
 
+  /**
+   *
+   * @param user
+   * @param pass
+   * @return
+   */
   @Override
-  public Usuarios validar(Usuarios user) {
-    String query = "SELECT * FROM usuario WHERE usuario='"+user.getUser()+"' AND clave='"+user.getClave()+"'";
+  public Usuarios validar(String user, String pass) {
+    Usuarios u = new Usuarios();
+    ResultSet s;
+    String query = "SELECT * FROM usuarios WHERE usuario='"+user+"' AND clave='"+pass+"'";
     try {
-      con= cn.getConexion();
-      ct=con.createStatement();
-      rs = ct.executeQuery(query);
-      if(rs.next() == true){
-        us = new Usuarios();
-        us.setId(rs.getInt("id"));
-        us.setUser(rs.getString("usuario"));
-        us.setClave(rs.getString("clave"));
-        us.setNombre(rs.getString("nombre"));
-        us.setCargo(rs.getString("cargo"));
-        us.setTanda(rs.getString("etanda"));
-        us.setEstado(rs.getBoolean("estado"));
+      con=cn.getConexion();
+      ps = con.prepareStatement(query);
+      s = ps.executeQuery();
+      while(s.next()){
+        u.setId(s.getInt("id"));
+        u.setUser(s.getString("usuario"));
+        u.setClave(s.getString("clave"));
+        u.setNombre(s.getString("nombre"));
+        u.setCargo(s.getString("cargo"));
+        u.setEmail(s.getString("correo"));
+        u.setTanda(s.getString("tanda"));
+        u.setEstado(s.getBoolean("estado"));
       }
-    } catch (SQLException e) {
-      System.out.println("Error: " +e.getMessage());
     } catch (ClassNotFoundException ex) {
-      Logger.getLogger(UsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
-    }finally{
-      try {
-        if(rs != null && rs.isClosed() == false){
-          rs.close();
-        }
-        if(ps != null && ps.isClosed() == false){
-          ps.close();
-        }
-        if(ct != null && ct.isClosed() == false){
-          ct.close();
-        }
-        cn = null;
-      } catch (SQLException ex) {
-        Logger.getLogger(UsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
-      }
+      System.out.print("Error al iniciar sesion: " +ex.getMessage());
+    } catch (SQLException ex) {
+      System.out.print("Error al iniciar sesion: " +ex.getMessage());
     }
-    return us;
+    return u;
   }
 
+  /**
+   *
+   * @param id
+   * @param string
+   * @return
+   */
+  @Override
+  public boolean cambiarClave(int id, String string) {
+    return false;
+   
+  }
+
+  
 }

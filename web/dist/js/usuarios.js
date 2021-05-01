@@ -34,7 +34,6 @@ $("#tblUsuarios").dataTable({
     dataSrc:""
   },
   columns:[
-    {data:"id"},
     {data:"user"},
     {data:"nombre"},
     {data:"email"},
@@ -54,19 +53,12 @@ $("#tblUsuarios").dataTable({
   columnDefs:[
     {
       targets: 0,
-      searchable: false,
-      render:function(data,type,row){
-        return `<strong class="text-navy">${data}</strong>`;
-      }
-    },
-    {
-      targets: 1,
       render:function(data,type,row){
         return `<strong class="text-primary">${data}</strong>`;
       }
     },
     {
-      targets: 4,
+      targets: 3,
       render:function(data,type,row){
         if(data =="admin"){
           return `<span class="text-primary"><i class="fas fa-user-cog"></i> Administrador</span>`;
@@ -79,7 +71,7 @@ $("#tblUsuarios").dataTable({
       }
     },
     {
-      targets: 5,
+      targets: 4,
       render:function(data,type,row){
         if(data =="matutino"){
           return `<span class="text-dark"><i class="fas fa-cloud-sun"></i> Matutino</span>`;
@@ -94,7 +86,7 @@ $("#tblUsuarios").dataTable({
       }
     },
     {
-      targets: 6,
+      targets: 5,
       render:function(data,type,row){
         if(data ==true){
           return `<span class="badge badge-success"><i class="fas fa-user-check"></i> Activo</span>`;
@@ -154,9 +146,9 @@ function cargarFrmEditar(da){
 function msg(data){
   const Toast = Swal.mixin({
     toast: true,
-    position: 'bottom-end',
+    position: 'center',
     showConfirmButton: false,
-    timer: 6000,
+    timer: 4000,
     timerProgressBar: true,
     didOpen: (toast) => {
       toast.addEventListener('mouseenter', Swal.stopTimer)

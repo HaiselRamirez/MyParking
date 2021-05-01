@@ -10,6 +10,6 @@ public interface Usuarios_i {
   public Usuarios list(int id);
   public boolean agregar(Usuarios us);
   public boolean editar(Usuarios us);
-  public boolean eliminar(int id);
-  public Usuarios validar(Usuarios us);
+  public Usuarios validar(String user, String pass);
+  public boolean cambiarClave(int id, String nueva);
 }

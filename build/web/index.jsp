@@ -1,6 +1,7 @@
-<%--<%
-  if(session.getAttribute("usu") != null){
-%>--%>
+<%
+  if(session.getAttribute("login")== "on"){
+%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="header.jsp"%>
     <section class="content-header">
       <div class="container-fluid">
@@ -106,7 +107,6 @@
 <%@include file="footer.jsp"%>
   </body>
 </html>
-
-<%-- <%}else{ --%>
-<%--response.sendRedirect("login.jsp");--%>
-<%--}%> --%>
+<%}else{
+response.sendRedirect("login.jsp");
+}%>

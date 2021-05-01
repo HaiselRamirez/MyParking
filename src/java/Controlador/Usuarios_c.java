@@ -23,7 +23,7 @@ public class Usuarios_c extends HttpServlet {
   Map<String, String> map = new HashMap<String, String>();
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-  
+      listarUsuarios(request, response);
   }
 
   @Override
