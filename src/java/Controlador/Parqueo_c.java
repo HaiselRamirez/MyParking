@@ -2,9 +2,11 @@
 package Controlador;
 
 import DAO.ParqueoDAO;
+import Modelo.Parqueo;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,22 @@ public class Parqueo_c extends HttpServlet {
     String act = request.getParameter("accion");
     switch (act){
       case "agregar":
-        nuevoParqueo(map, response);
+        nuevoParqueo(request, response);
+        break;
+      case "editar":
+        editarParqueo(request, response);
+        break;
+      case "list":
+        getParqueo(request, response);
+        break;
+      case "activos":
+        parqueosActivos(request, response);
+        break;
+      case "cantidad":
+        cantidadParqueos(request, response);
+        break;
+      default:
+        todosParqueos(request, response);
     }
   }
 
@@ -48,12 +65,38 @@ public class Parqueo_c extends HttpServlet {
     return "Short description";
   }// </editor-fold>
 
-  private void nuevoParqueo(Map<String, Object> map, HttpServletResponse response) {
+  
+  
+  
+ 
+  private void nuevoParqueo(HttpServletRequest request, HttpServletResponse response) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
-  
-  
-  private void responseJson(List<Parqueo_c> list, HttpServletResponse response) throws IOException {
+
+  private void editarParqueo(HttpServletRequest request, HttpServletResponse response) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+
+  private void getParqueo(HttpServletRequest request, HttpServletResponse response) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+
+  private void todosParqueos(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    List<Parqueo> list = new ArrayList();
+    list = dao.listar();
+    responseJson(list, response);
+  }
+
+  private void parqueosActivos(HttpServletRequest request, HttpServletResponse response) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+
+  private void cantidadParqueos(HttpServletRequest request, HttpServletResponse response) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+
+
+   private void responseJson(List<Parqueo> list, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
     String json = gson.toJson(list);
     PrintWriter printer = response.getWriter();
